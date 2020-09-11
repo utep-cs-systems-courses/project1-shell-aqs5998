@@ -1,48 +1,34 @@
 import os, re, sys
+import subprocess
 
 shellPromptToken = os.getenv("PS1")
 commandList = ["ls", "cd", "..", "mkdir", "exit", "bash"]
 Value = False
 
 #shellPrompt = str(input(f"{shellPromptToken} "))
+def push_cd(path): #Convert the path into another path
+    try:
+        os.chdir(os.path.abspath(path))
+    except Exception:
+        print("cd: no such file or directory: {}".format(path))
 
-while Value == False:
-    shellPrompt = str(input("?> "))
-    shellPromptToken = shellPrompt
-    x = re.search("^bash", shellPromptToken)
-    if x:
-        #print("YES! We have a match!")
-        Value = True
-    for a in commandList:
-        if shellPromptToken == a:
-            Value = True
-    if Value == False:
-        print(shellPromptToken + " :command not found")
-if Value == True: 
-    print("valid command")
-if shellPromptToken == "exit":
-    print("Now exiting the shell. Goodbye")
-    sys.exit(1)
-pid = os.getpid()
-userInput = shellPromptToken.split()
-args = ["wc", userInput[1]]
-os.write(1, ("About to fork (pid:%d)\n" % pid).encode())
-rc = os.fork()
-if rc < 0:
-    os.write(2, ("fork failed, returning %d\n" % rc).encode())
-    sys.exit(1)
-    # Your shell should create a child process that uses execve to run the command with its parameters.  
-elif rc == 0:                   # child 
-    os.write(1, ("I am child.  My pid==%d.  Parent's pid=%d\n" % (os.getpid(), pid)).encode())
-    for dir in re.split(":", os.environ['PATH']): # try each directory in the path
-        program = "%s/%s" % (dir, args[0])
-        os.write(1, ("Child is trying to exec %s\n" % program).encode())
-        try:
-            os.execve(program,args, os.environ) #try to exec program
-            childPidCode = os.wait()
-        except FileNotFoundError:                #this is expected
-            pass                                 #fail quietly
-    os.write(2, ("Child was not able to exec %s\n" % args[0]).encode())
-    sys.exit(1) #terminate with error
-else: # parent (forked ok)
-    os.write(1, ("I am parent.  My pid=%d.  Child's pid=%d\n" % (pid, rc)).encode())
+def execute_commands(command):
+    try:
+        subprocess.run(command.split())
+    except Exception:
+        print("{}: command not found".format(command))
+
+def main():
+    while True:
+        command = input("$ ")
+        if command == "exit":
+            print("see ya")
+            sys.exit(0)
+        elif command[:3] == "cd ":
+            push_cd(command[3:])
+        elif command == "help":
+            print("{}: is a sample command directory that has not been finished".format(command))
+        else:
+            execute_commands(command)
+
+main()
