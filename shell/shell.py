@@ -1,4 +1,4 @@
-import os, re, sys
+import os, re, sys, time
 import subprocess
 
 shellPromptToken = os.getenv("PS1")
@@ -16,7 +16,8 @@ def push_cd(path): #Convert the path into another path
 def execute_command(command):
     try:
         if "|" in command:  # save for restoring later on
-            s_in, s_out = (0, 0)
+            s_in = 0
+            s_out = 0
             s_in = os.dup(0)
             s_out = os.dup(1)
 
