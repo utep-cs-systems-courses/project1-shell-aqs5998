@@ -1,0 +1,9 @@
+0
+Does it reach here try
+['ls']
+1
+Does it reach here try
+['out.txt']
+Does it reach here exception
+Does it reach here
+$ see ya
