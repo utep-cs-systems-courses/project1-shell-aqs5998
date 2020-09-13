@@ -1,5 +1,0 @@
-out.txt
-output.txt
-p3-exec.py
-shell.py
-testShell.sh
