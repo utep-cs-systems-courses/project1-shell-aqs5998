@@ -96,10 +96,10 @@ def execute_command(command):
             os.close(s_in)
             os.close(s_out)
         else:
-            print("End")
+            #print("End")
             subprocess.run(command.split(" "))
     except Exception:
-        #print("Arrived to the bottom of exepction")
+        print("Arrived to the bottom of exepction")
         pass
 
 def execute_commands(command):
