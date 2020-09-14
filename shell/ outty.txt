@@ -1,8 +1,0 @@
-0
-Does it reach here try
-['pwd']
-Does it reach here exception
-1
-Does it reach here try
-['outty.txt']
-Does it reach here exception

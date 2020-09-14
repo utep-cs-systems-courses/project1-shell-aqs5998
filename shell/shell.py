@@ -35,21 +35,21 @@ def execute_command(command):
             fdin = os.dup(s_in)
             #print(cmd[1])
             fd = os.open(path, os.O_CREAT | os.O_WRONLY) 
+            #when reading < make ready only file O_RDONLY
             fd_out = os.dup2(fd, 1)
             os.close(fd)
             os.set_inheritable(1,True)
             count = 0
             for cmd in command.split(">"):
-                print(count)
                 count = count + 1
                 try:
-                    print("Does it reach here try")
-                    print(cmd.strip().split())
+                    #print("Does it reach here try")
+                    #print(cmd.strip().split())
                     #sys.stdout = open(cmd.strip().split(), "w")
                     subprocess.run(cmd.strip().split())
                     pass
                 except Exception:
-                    print("Does it reach here exception")
+                    #print("Does it reach here exception")
                     pass
             #os.set_inheritable(1,False)
             # restore stdout and stdin
@@ -99,7 +99,7 @@ def execute_command(command):
             print("End")
             subprocess.run(command.split(" "))
     except Exception:
-        print("Arrived to the bottom of exepction")
+        #print("Arrived to the bottom of exepction")
         pass
 
 def execute_commands(command):
