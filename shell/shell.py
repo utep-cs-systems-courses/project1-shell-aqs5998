@@ -18,6 +18,10 @@ def execute_command(command):
         if ">" in command:  # save for restoring later on
             print(command)
             print("Command works")
+            s_in = 0
+            s_out = 0
+            s_in = os.dup(0)
+            s_out = os.dup(1)
             # first command takes commandut from stdin
             # iterate over all the commands that are piped
             # fdin will be stdin if it's the first iterationls
@@ -27,11 +31,13 @@ def execute_command(command):
             else:
                 path = command.split(">")[-1]
             cmd = command.split(">")
+            # first command takes commandut from stdin
+            fdin = os.dup(s_in)
             #print(cmd[1])
-            os.close(1)
             fd = os.open(path, os.O_CREAT | os.O_WRONLY) 
-            fdin = os.dup(fd)
-            #os.set_inheritable(1,True)
+            fd_out = os.dup2(fd, 1)
+            os.close(fd)
+            os.set_inheritable(1,True)
             count = 0
             for cmd in command.split(">"):
                 print(count)
@@ -39,16 +45,21 @@ def execute_command(command):
                 try:
                     print("Does it reach here try")
                     print(cmd.strip().split())
+                    #sys.stdout = open(cmd.strip().split(), "w")
                     subprocess.run(cmd.strip().split())
                     pass
                 except Exception:
                     print("Does it reach here exception")
                     pass
-                #os.set_inheritable(1,False)
-            #os.open(1)
-            #os.close(fd)
+            #os.set_inheritable(1,False)
+            # restore stdout and stdin
+            os.dup2(fd_out, 1)
+            os.dup2(s_in, 0)
+            os.dup2(s_out, 1)
+            os.close(fd)
+            os.close(s_in)
+            os.close(s_out)
             print("Does it reach here")
-            os.close(fdin)
         elif "|" in command:  # save for restoring later on
             s_in = 0
             s_out = 0
@@ -86,7 +97,7 @@ def execute_command(command):
             os.close(s_out)
         else:
             print("End")
-            #subprocess.run(command.split(" "))
+            subprocess.run(command.split(" "))
     except Exception:
         print("Arrived to the bottom of exepction")
         pass

@@ -1,12 +1,8 @@
 0
 Does it reach here try
-['ls']
- out.txt
- outty.txt
-p3-exec.py
-shell.py
-testShell.sh
+['pwd']
+Does it reach here exception
 1
 Does it reach here try
-['out.txt']
+['outty.txt']
 Does it reach here exception
