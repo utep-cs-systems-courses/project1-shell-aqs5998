@@ -53,7 +53,7 @@ def execute_command(command):
                     pass
             #os.set_inheritable(1,False)
             # restore stdout and stdin
-            os.dup2(fd_out, 1)
+            #os.dup2(fd_out, 1)
             os.dup2(s_in, 0)
             os.dup2(s_out, 1)
             os.close(fd)
