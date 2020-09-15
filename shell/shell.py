@@ -33,7 +33,7 @@ def execute_command(command):
             cmd = command.split(">")
             # first command takes commandut from stdin
             fdin = os.dup(s_in)
-            print(cmd[1])
+            #print(cmd[1])
             fd = os.open(path, os.O_CREAT | os.O_WRONLY) 
             #when reading < make ready only file O_RDONLY
             fd_out = os.dup2(fd, 1)
@@ -43,7 +43,7 @@ def execute_command(command):
             for cmd in command.split(">"):
                 count = count + 1
                 try:
-                    print("Does it reach here try")
+                    #print("Does it reach here try")
                     #print(cmd.strip().split())
                     #sys.stdout = open(cmd.strip().split(), "w")
                     subprocess.run(cmd.strip().split())
@@ -59,7 +59,7 @@ def execute_command(command):
             os.close(fd)
             os.close(s_in)
             os.close(s_out)
-            print("Does it reach here")
+            #print("Does it reach here")
         elif "|" in command:  # save for restoring later on
             s_in = 0
             s_out = 0
@@ -99,7 +99,7 @@ def execute_command(command):
             #print("End")
             subprocess.run(command.split(" "))
     except Exception:
-        print("Arrived to the bottom of exepction")
+        #print("Arrived to the bottom of exepction")
         pass
 
 def execute_commands(command):
