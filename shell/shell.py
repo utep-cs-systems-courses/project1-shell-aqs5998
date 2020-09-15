@@ -16,8 +16,8 @@ def push_cd(path): #Convert the path into another path
 def execute_command(command):
     try:
         if ">" in command:  # save for restoring later on
-            print(command)
-            print("Command works")
+            #print(command)
+            #print("Command works")
             s_in = 0
             s_out = 0
             s_in = os.dup(0)
