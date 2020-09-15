@@ -119,6 +119,7 @@ def main():
         elif command == "help":
             print("{}: is a sample command directory that has not been finished".format(command))
         else:
+            print(command)
             execute_command(command)
 
 main()
