@@ -1,1 +1,6 @@
-/Users/alexsanchez/Documents/csCourses/Operating Systems/repo/project1-shell-aqs5998/shell
+ out.txt
+out.txt
+p3-exec.py
+shell.py
+testShell.sh
+ystems/repo/project1-shell-aqs5998/shell
