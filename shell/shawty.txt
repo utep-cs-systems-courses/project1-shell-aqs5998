@@ -2,5 +2,6 @@ out.txt
 outt.txt
 outtt.txt
 p3-exec.py
+shawty.txt
 shell.py
 testShell.sh
