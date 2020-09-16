@@ -10,23 +10,22 @@ def redirect(userInput):
         #print(userInput[1])
         if '>' in userInput:
             userInput = userInput.split('>')
-            os.close(1)
-            sys.stdout = open(userInput[1].strip(), "w")
-            os.set_inheritable(1, True)
-            pathCommand(userInput[0].split())
+            os.close(1) #closes the read output to terminal
+            sys.stdout = open(userInput[1].strip(), "w") #opens the file out.txt to the system stout
+            os.set_inheritable(1, True) #makes sure that output after is written to file
+            pathCommand(userInput[0].split()) #executes command
         else:
-            os.close(0)
-            sys.stdin = open(userInput[1].strip(), 'r')
-            os.set_inheritable(0, True)
-            pathCommand(userInput[0].split())
-
+            os.close(0) #closes the read output to terminal
+            sys.stdin = open(userInput[1].strip(), 'r')  #opens the file out.txt to the system stout
+            os.set_inheritable(0, True) #makes sure that output after is written to file
+            pathCommand(userInput[0].split()) #executes command
 def pathCommand(args): #Taken from execute demo
         for dir in re.split(":", os.environ['PATH']): # try each directory in the path
-                program = "%s/%s" % (dir, args[0])
-                try:
-                    os.execve(program, args, os.environ) # try to exec program
-                except FileNotFoundError:             # ...expected
-                    pass                              # ...fail quietly
+            program = "%s/%s" % (dir, args[0])
+            try:
+                os.execve(program, args, os.environ) # try to exec program
+            except FileNotFoundError:             # ...expected
+                pass                              # ...fail quietly
         os.write(2, ("Child:    Could not exec %s\n" % args[0]).encode())
         sys.exit(1) # terminate with error
 
@@ -52,7 +51,7 @@ def tryCommand(userInput):
     elif rc == 0:                   # child
         os.write(1, ("Child: My pid==%d.  Parent's pid=%d\n" %(os.getpid(), pid)).encode())
         args = userInput.split()
-        if "|" in userInput: # Piping command
+        if "|" in userInput: 
             pipe = userInput.split("|")
             pipeCommand1= pipe[0].split()
             pipeCommand2 = pipe[1].split()
@@ -65,14 +64,14 @@ def tryCommand(userInput):
                 sys.exit(1)
             if pipeFork == 0: # child - will write to pipe
                 os.close(1) # redirect child's stdout
-                os.dup(pw)
+                os.dup(pw) #called pw to write 
                 os.set_inheritable(1, True)
                 for fd in (pr, pw):
-                    os.close(fd)
+                    os.close(fd) #closed fd to stop writing to terminal
                 pathCommand(pipeCommand1)    
             else: # parent (forked ok)
-                os.close(0)
-                os.dup(pr)
+                os.close(0) #closed the terminal input
+                os.dup(pr) #called pr to read from input pipe
                 os.set_inheritable(0, True)
                 for fd in (pw, pr):
                     os.close(fd)
