@@ -62,6 +62,7 @@ def tryCommand(userInput):
             if pipeFork < 0:  # fork failed
                 os.write(2, ('Fork failed').encode())
                 sys.exit(1)
+            # child will redirect output to the parent
             if pipeFork == 0: # child - will write to pipe
                 os.close(1) # redirect child's stdout
                 os.dup(pw) #called pw to write 
