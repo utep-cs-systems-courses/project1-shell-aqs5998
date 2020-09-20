@@ -77,9 +77,7 @@ def tryCommand(userInput):
                 for fd in (pw, pr):
                     os.close(fd)
                 pathCommand(pipeCommand2)                            
-        if '>' in userInput:
-            redirect(userInput)
-        elif '<' in userInput:
+        if '>' or '<'  in userInput:
             redirect(userInput)
         else:
             pathCommand(args)
