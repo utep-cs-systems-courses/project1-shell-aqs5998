@@ -1,3 +1,6 @@
+#! /usr/bin/env python3
+
+
 import os, sys, time, re
 
 
@@ -71,7 +74,7 @@ def tryCommand(userInput):
                 pathCommand(pipeCommand1)    
             else: # parent (forked ok)
                 os.close(0) #closed the terminal input
-                os.dup(pr) #called pr to read from input 
+                os.dup(pr) #called pr to read from input pre
                 os.set_inheritable(0, True)
                 for fd in (pw, pr):
                     os.close(fd)
@@ -89,23 +92,25 @@ def tryCommand(userInput):
 
 def main():
     while True:
-            if 'PS1' in os.environ:
-                os.write(1, (os.environ['PS1']).encode())
-            else:
-                os.write(1, ('$ ').encode())
-                try:
-                    userInput = input()
-                except EOFError:
-                    sys.exit(1)
-            if userInput == "": 
-                continue
-            """Exits the program"""
-            if 'exit' in userInput: 
-                print("see ya")
-                break
-            """Changes Directory"""
-            if 'cd' in userInput: 
-                changeDirectory(userInput)
-            else:
-                tryCommand(userInput)
+        if 'PS1' in os.environ:
+            os.write(1, (os.environ['PS1']).encode())
+        else:
+            os.write(1, ('$ ').encode())
+            try:
+                i = os.read(0, 500)
+                s = i.decode()
+                userInput = s
+            except EOFError:
+                sys.exit(1)
+        if userInput == "":
+            continue
+        """Exits the program"""
+        if 'exit' in userInput: 
+            print("see ya")
+            break
+        """Changes Directory"""
+        if 'cd' in userInput: 
+            changeDirectory(userInput)
+        if userInput != "":
+            tryCommand(userInput)
 main()
