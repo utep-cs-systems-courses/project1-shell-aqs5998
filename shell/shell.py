@@ -30,7 +30,7 @@ def pathCommand(args): #Taken from execute demo
                 os.execve(program, args, os.environ) # try to exec program
             except FileNotFoundError:             # ...expected
                 pass                              # ...fail quietly
-        os.write(2, ("Child:    Could not exec %s\n" % args[0]).encode())
+        #os.write(2, ("Child:    Could not exec %s\n" % args[0]).encode())
         sys.exit(1) # terminate with error
 
 def changeDirectory(userInput):
@@ -51,10 +51,10 @@ def tryCommand(userInput):
         os.write(1, ("About to fork (pid:%d)\n" % pid).encode())
         rc = os.fork()
         if rc < 0:
-            os.write(2, ("fork failed, returning %d\n" % rc).encode())
+            #os.write(2, ("fork failed, returning %d\n" % rc).encode())
             sys.exit(1)
         elif rc == 0:                   # child
-            os.write(1, ("Child: My pid==%d.  Parent's pid=%d\n" %(os.getpid(), pid)).encode())
+            #os.write(1, ("Child: My pid==%d.  Parent's pid=%d\n" %(os.getpid(), pid)).encode())
             args = userInput.split()
             if "|" in userInput: 
                 pipe = userInput.split("|")
@@ -88,9 +88,9 @@ def tryCommand(userInput):
             else:
                 pathCommand(args)
         else:                      # parent (forked ok)
-            os.write(1, ("Parent: My pid=%d.  Child's pid=%d\n" %(pid, rc)).encode())
+            #os.write(1, ("Parent: My pid=%d.  Child's pid=%d\n" %(pid, rc)).encode())
             childPidCode = os.wait()
-            os.write(1, ("Parent: Child %d terminated with exit code %d\n" %childPidCode).encode())
+            #os.write(1, ("Parent: Child %d terminated with exit code %d\n" %childPidCode).encode())
 
 def main():
     while True:
@@ -104,15 +104,15 @@ def main():
                 userInput = s
             except EOFError:
                 sys.exit(1)
-        if userInput == "":
-            continue
-        """Exits the program"""
-        if 'exit' in userInput: 
-            print("see ya")
-            break
-        """Changes Directory"""
-        if 'cd' in userInput: 
-            changeDirectory(userInput)
-        if userInput != "":
-            tryCommand(userInput)
+            if userInput == "":
+                continue
+            """Exits the program"""
+            if 'exit' in userInput: 
+                print("see ya")
+                break
+            """Changes Directory"""
+            if 'cd' in userInput: 
+                changeDirectory(userInput)
+            if userInput != "":
+                tryCommand(userInput)
 main()
