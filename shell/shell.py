@@ -62,22 +62,23 @@ def tryCommand(userInput):
             if pipeFork < 0:  # fork failed
                 os.write(2, ('Fork failed').encode())
                 sys.exit(1)
-            # child will redirect output to the parent
             if pipeFork == 0: # child - will write to pipe
                 os.close(1) # redirect child's stdout
-                os.dup(pw) #called pw to write 
+                os.dup(pw)
                 os.set_inheritable(1, True)
                 for fd in (pr, pw):
-                    os.close(fd) #closed fd to stop writing to terminal
+                    os.close(fd)
                 pathCommand(pipeCommand1)    
             else: # parent (forked ok)
                 os.close(0) #closed the terminal input
-                os.dup(pr) #called pr to read from input pipe
+                os.dup(pr) #called pr to read from input 
                 os.set_inheritable(0, True)
                 for fd in (pw, pr):
                     os.close(fd)
                 pathCommand(pipeCommand2)                            
-        if '>' or '<'  in userInput:
+        if '>' in userInput:
+            redirect(userInput)
+        elif '<' in userInput:
             redirect(userInput)
         else:
             pathCommand(args)
